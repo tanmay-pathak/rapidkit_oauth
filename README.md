@@ -6,6 +6,34 @@ All required modules and configurations are automatically handled during recipe 
 You only need to provide the necessary **environment variables**.
 
 ---
+## Installation
+
+Add the following under repositories in `composer.json`:
+
+```json
+{
+  "type": "vcs",
+  "url": "https://github.com/tanmay-pathak/rapidkit_oauth.git"
+}
+```
+
+Install the recipe:
+
+```shell
+lando composer require drupal/rapidkit_oauth
+```
+
+Unpack the recipe (optional - uses [module](https://github.com/woredeyonas/Drupal-Recipe-Unpack)):
+
+```shell
+lando composer unpack drupal/rapidkit_oauth
+```
+
+Apply the recipe:
+
+```shell
+lando drush recipe ../recipes/rapidkit_oauth
+```
 
 ## 🧩 Environment Variables
 
