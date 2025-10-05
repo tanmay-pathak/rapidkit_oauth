@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: google
+label: Google
+plugin: google
+settings:
+  client_id: ''
+  client_secret: ''
+  iss_allowed_domains: ''

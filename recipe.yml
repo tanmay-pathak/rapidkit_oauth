@@ -1,0 +1,19 @@
+name: 'Rapidkit OAuth'
+description: 'Enable OAuth using OpenID Connect'
+type: 'Site'
+
+install:
+  - openid_connect
+
+config:
+  strict: false
+  import:
+    openid_connect: '*'
+  actions:
+    openid_connect.settings:
+      simpleConfigUpdate:
+        user_login_display: replace
+        override_registration_settings: true
+        always_save_userinfo: true
+        end_session_enabled: false
+        connect_existing_users: false

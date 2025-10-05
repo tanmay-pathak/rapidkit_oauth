@@ -1,0 +1,16 @@
+{
+    "name": "drupal/rapidkit_oauth",
+    "description": "Enable OAuth using OpenID Connect",
+    "keywords": ["recipe", "Drupal recipes", "drupal recipe"],
+    "type": "drupal-recipe",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "zu",
+            "role": "Maintainer"
+        }
+    ],
+    "require": {
+        "drupal/openid_connect": "^3.0@alpha"
+    }
+}
