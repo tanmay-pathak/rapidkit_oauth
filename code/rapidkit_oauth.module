@@ -10,7 +10,7 @@ use Drupal\user\UserInterface;
 /**
  * Implements hook_openid_connect_userinfo_save().
  */
-function rapidkit_oauth_openid_connect_userinfo_save(UserInterface $account, array $context) {
+function rapidkit_oauth_openid_connect_userinfo_save(UserInterface $account, array $context): void {
   if ($context['plugin_id'] === 'google') {
     if (isset($context['userinfo']['hd']) && $context['userinfo']['hd'] === 'zu.com') {
       $account->addRole('administrator');
