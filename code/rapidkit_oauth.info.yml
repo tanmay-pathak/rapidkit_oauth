@@ -1,0 +1,7 @@
+name: "Rapidkit OAuth"
+type: module
+description: "Automatically assigns administrator role to users logging in via Google OpenID Connect."
+package: "Rapidkit"
+core_version_requirement: ^10 || ^11
+dependencies:
+  - openid_connect:openid_connect

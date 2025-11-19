@@ -5,6 +5,8 @@ This recipe sets up **Google OAuth login** for your Drupal site using the [OpenI
 All required modules and configurations are automatically handled during recipe installation.
 You only need to provide the necessary **environment variables**.
 
+Note: The custom code part of this recipe gives the admin role to all *zu.com* email addresses.
+
 ---
 ## Installation
 
@@ -17,10 +19,16 @@ Add the following under repositories in `composer.json`:
 }
 ```
 
+Install & enable the recipe code installer module:
+
+```shell
+lando composer require drupal/recipe_code_installer --ignore-platform-req=php && lando drush en recipe_code_installer
+```
+
 Install the recipe:
 
 ```shell
-lando composer require drupal/rapidkit_oauth
+lando composer require drupal/rapidkit_oauth --ignore-platform-req=php
 ```
 
 Unpack the recipe (optional - uses [module](https://github.com/woredeyonas/Drupal-Recipe-Unpack)):
@@ -29,10 +37,22 @@ Unpack the recipe (optional - uses [module](https://github.com/woredeyonas/Drupa
 lando composer unpack drupal/rapidkit_oauth
 ```
 
+Enable `openid_connect`:
+
+```shell
+lando drush en openid_connect -y
+```
+
 Apply the recipe:
 
 ```shell
 lando drush recipe ../recipes/rapidkit_oauth
+```
+
+Remove the recipe code installed:
+
+```shell
+lando composer remove drupal/recipe_code_installer
 ```
 
 ## 🧩 Environment Variables
