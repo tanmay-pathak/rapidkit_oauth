@@ -12,7 +12,7 @@ config:
   actions:
     openid_connect.settings:
       simpleConfigUpdate:
-        user_login_display: replace
+        user_login_display: above
         override_registration_settings: true
         always_save_userinfo: true
         end_session_enabled: false
