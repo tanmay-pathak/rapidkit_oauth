@@ -11,6 +11,7 @@
         }
     ],
     "require": {
-        "drupal/openid_connect": "^3.0@alpha"
+        "drupal/openid_connect": "^3.0@alpha",
+        "drupal/recipe_code_installer": "^1.0"
     }
 }
