@@ -52,7 +52,7 @@ lando drush recipe ../recipes/rapidkit_oauth
 Remove the recipe code installed:
 
 ```shell
-lando composer remove drupal/recipe_code_installer
+lando drush pmu recipe_code_installer -y && lando composer remove drupal/recipe_code_installer
 ```
 
 ## 🧩 Environment Variables
@@ -85,3 +85,7 @@ $config['openid_connect.client.google']['settings']['client_id'] = $_ENV['GOOGLE
 $config['openid_connect.client.google']['settings']['client_secret'] = $_ENV['GOOGLE_CLIENT_SECRET'];
 $config['openid_connect.client.google']['settings']['iss_allowed_domains'] = $_ENV['GOOGLE_ALLOWED_DOMAINS'];
 ```
+
+## 🚀 Custom Login Route
+
+* **`/user/zu`** → Initiates the Google OAuth login flow directly.
