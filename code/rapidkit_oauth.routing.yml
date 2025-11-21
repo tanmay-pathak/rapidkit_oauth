@@ -1,0 +1,10 @@
+rapidkit_oauth.login:
+  path: '/user/zu'
+  defaults:
+    _controller: '\Drupal\rapidkit_oauth\Controller\OAuthController::login'
+    _title: 'OAuth Login'
+  requirements:
+    _user_is_logged_in: 'FALSE'
+    _custom_access: '\Drupal\rapidkit_oauth\Controller\OAuthController::access'
+  options:
+    _maintenance_access: TRUE
