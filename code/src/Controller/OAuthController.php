@@ -2,11 +2,14 @@
 
 namespace Drupal\rapidkit_oauth\Controller;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\openid_connect\OpenIDConnectClientEntityInterface;
 use Drupal\openid_connect\OpenIDConnectClaims;
+use Drupal\openid_connect\Plugin\OpenIDConnectClientInterface;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Controller for OAuth login.
  */
-class OAuthController extends ControllerBase {
+final class OAuthController extends ControllerBase {
 
   /**
    * The entity type manager.
@@ -73,6 +76,7 @@ class OAuthController extends ControllerBase {
    */
   public function access(): AccessResultInterface {
     // Load the Google client entity.
+    /** @var \Drupal\openid_connect\OpenIDConnectClientEntityInterface[] $clients */
     $clients = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => 'google']);
     if (empty($clients)) {
       // Add cache tag for the entity list so cache invalidates when
@@ -82,6 +86,7 @@ class OAuthController extends ControllerBase {
     }
 
     $client = reset($clients);
+    assert($client instanceof OpenIDConnectClientEntityInterface);
 
     // Add the client entity as a cacheable dependency so access cache
     // invalidates when the client is enabled/disabled or modified.
@@ -107,12 +112,14 @@ class OAuthController extends ControllerBase {
    */
   public function login(Request $request) {
     // Load the Google client entity.
+    /** @var \Drupal\openid_connect\OpenIDConnectClientEntityInterface[] $clients */
     $clients = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => 'google']);
     if (empty($clients)) {
       throw new NotFoundHttpException('OpenID Connect client not found.');
     }
 
     $client = reset($clients);
+    assert($client instanceof OpenIDConnectClientEntityInterface);
     if (!$client->status()) {
       throw new NotFoundHttpException('OpenID Connect client is disabled.');
     }
@@ -121,8 +128,15 @@ class OAuthController extends ControllerBase {
     $this->session->saveDestination();
 
     // Get the plugin and initiate authorization.
-    $plugin = $client->getPlugin();
-    if (!$plugin) {
+    try {
+      /** @var \Drupal\openid_connect\Plugin\OpenIDConnectClientInterface|null $plugin */
+      $plugin = $client->getPlugin();
+    }
+    catch (PluginException $exception) {
+      throw new NotFoundHttpException('OpenID Connect client plugin not found.', $exception);
+    }
+
+    if (!$plugin instanceof OpenIDConnectClientInterface) {
       throw new NotFoundHttpException('OpenID Connect client plugin not found.');
     }
 
