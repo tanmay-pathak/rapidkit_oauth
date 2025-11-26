@@ -7,4 +7,4 @@ plugin: google
 settings:
   client_id: ''
   client_secret: ''
-  iss_allowed_domains: ''
+  iss_allowed_domains: 'zu.com'

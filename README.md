@@ -62,14 +62,12 @@ Add the following variables to your project’s `.env` file:
 ```bash
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-GOOGLE_ALLOWED_DOMAINS=
 ```
 
 ### Description
 
 * **GOOGLE_CLIENT_ID** → Your OAuth 2.0 Client ID from Google Cloud Console
 * **GOOGLE_CLIENT_SECRET** → Your OAuth 2.0 Client Secret
-* **GOOGLE_ALLOWED_DOMAINS** → Comma-separated list of allowed email domains (e.g. `example.com,zu.com`)
 
 ---
 
@@ -83,7 +81,6 @@ Add the following snippet to your `settings.php` file to load the environment va
  */
 $config['openid_connect.client.google']['settings']['client_id'] = $_ENV['GOOGLE_CLIENT_ID'];
 $config['openid_connect.client.google']['settings']['client_secret'] = $_ENV['GOOGLE_CLIENT_SECRET'];
-$config['openid_connect.client.google']['settings']['iss_allowed_domains'] = $_ENV['GOOGLE_ALLOWED_DOMAINS'];
 ```
 
 ## 🚀 Custom Login Route
