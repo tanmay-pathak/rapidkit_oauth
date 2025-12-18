@@ -15,5 +15,11 @@ function rapidkit_oauth_openid_connect_userinfo_save(UserInterface $account, arr
     if (isset($context['userinfo']['hd']) && $context['userinfo']['hd'] === 'zu.com') {
       $account->addRole('administrator');
     }
+
+    // Prefix username for Google OAuth users.
+    $name = $account->getAccountName();
+    if (!str_starts_with($name, '(zu)')) {
+      $account->set('name', '(zu)' . $name);
+    }
   }
 }
