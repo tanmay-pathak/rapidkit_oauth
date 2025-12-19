@@ -16,10 +16,40 @@ function rapidkit_oauth_openid_connect_userinfo_save(UserInterface $account, arr
       $account->addRole('administrator');
     }
 
-    // Prefix username for Google OAuth users.
+    // Generate username with initials for Google OAuth users.
     $name = $account->getAccountName();
-    if (!str_starts_with($name, '(zu)')) {
-      $account->set('name', '(zu)' . $name);
+    if (str_contains($name, '(zu)')) {
+      return;
+    }
+
+    // Split name by whitespace and extract initials.
+    $words = preg_split('/\s+/', trim($name));
+    $initials = '';
+    if (is_array($words)) {
+      foreach ($words as $word) {
+        if (!empty($word)) {
+          $initials .= strtoupper(substr($word, 0, 1));
+        }
+      }
+    }
+
+    if (!empty($initials)) {
+      $base_name = $initials . ' (zu)';
+      $candidate = $base_name;
+
+      // Ensure the generated username is unique.
+      $user_storage = \Drupal::entityTypeManager()->getStorage('user');
+      $suffix = 1;
+      while ($existing = $user_storage->loadByProperties(['name' => $candidate])) {
+        $existing_account = reset($existing);
+        if ($existing_account instanceof UserInterface && $existing_account->id() === $account->id()) {
+          break;
+        }
+        $candidate = $base_name . '-' . $suffix;
+        $suffix++;
+      }
+
+      $account->set('name', $candidate);
     }
   }
 }
